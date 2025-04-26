@@ -1014,6 +1014,7 @@ function getLogDepthPolygonOffsetFragmentShaderProgram(context, shaderProgram) {
         vertexShaderSource: shaderProgram.vertexShaderSource,
         fragmentShaderSource: fs,
         attributeLocations: shaderProgram._attributeLocations,
+        uniformExtraInfo: shaderProgram._uniformExtraInfo,
       },
     );
   }

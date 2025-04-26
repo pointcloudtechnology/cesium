@@ -206,6 +206,7 @@ function updateResources(
           defines: ["PICK"],
         }),
         attributeLocations: compositeProgram._attributeLocations,
+        uniformExtraInfo: compositeProgram._uniformExtraInfo,
       },
     );
     const compositePickCommand = DrawCommand.shallowClone(compositeCommand);

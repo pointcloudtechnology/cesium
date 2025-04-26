@@ -505,6 +505,7 @@ function getDerivedShaderProgram(
   );
   if (!defined(shader)) {
     const attributeLocations = shaderProgram._attributeLocations;
+    const uniformExtraInfo = shaderProgram._uniformExtraInfo;
     const vs = shaderProgram.vertexShaderSource.clone();
     const fs = shaderProgram.fragmentShaderSource.clone();
     vs.defines = defined(vs.defines) ? vs.defines.slice(0) : [];
@@ -519,6 +520,7 @@ function getDerivedShaderProgram(
         vertexShaderSource: vs,
         fragmentShaderSource: fs,
         attributeLocations: attributeLocations,
+        uniformExtraInfo: uniformExtraInfo,
       },
     );
   }

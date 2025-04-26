@@ -210,6 +210,17 @@ function CustomShader(options) {
   this.uniformMap = buildUniformMap(this);
 
   /**
+   * The map of uniform names to an object that contains booleans which will influence how these uniforms are handled
+   * in the rendering pipeline. E.g. if a uniform has the boolean `shouldConvertToModelCoordinates` set to `true`, its
+   * value will be converted to model coordinates before being passed to the shader (only applicable for `Cartesian3`s).
+   *
+   * @type {Object<string, Object<string, boolean>>}
+   * @readonly
+   * @private
+   */
+  this.uniformExtraInfoMap = buildUniformExtraInfoMap(this);
+
+  /**
    * A collection of variables used in <code>vertexShaderText</code>. This
    * is used only for optimizations in {@link CustomShaderPipelineStage}.
    * @type {VertexVariableSets}
@@ -241,7 +252,7 @@ function buildUniformMap(customShader) {
   const uniforms = customShader.uniforms;
   const uniformMap = {};
   for (const uniformName in uniforms) {
-    if (uniforms.hasOwnProperty(uniformName)) {
+    if (Object.hasOwn(uniforms, uniformName)) {
       const uniform = uniforms[uniformName];
       const type = uniform.type;
       //>>includeStart('debug', pragmas.debug);
@@ -267,6 +278,34 @@ function buildUniformMap(customShader) {
     }
   }
   return uniformMap;
+}
+
+function buildUniformExtraInfoMap(customShader) {
+  const uniforms = customShader.uniforms;
+  const uniformExtraInfoMap = {};
+  for (const uniformName in uniforms) {
+    if (Object.hasOwn(uniforms, uniformName)) {
+      const uniform = uniforms[uniformName];
+
+      // This is a restriction that is not necessarily needed, but allows us to keep the needed code to a minimum.
+      // As long as we don't need e.g. VEC4s in model coordinates, we can keep it this way. Otherwise we can just update
+      // the code in the future.
+      if (
+        uniform.shouldConvertToModelCoordinates &&
+        uniform.type !== UniformType.VEC3
+      ) {
+        throw new DeveloperError(
+          "Uniforms that require conversion to model coordinates must be of type VEC3.",
+        );
+      }
+
+      uniformExtraInfoMap[uniformName] = {
+        shouldConvertToModelCoordinates:
+          !!uniform.shouldConvertToModelCoordinates,
+      };
+    }
+  }
+  return uniformExtraInfoMap;
 }
 
 function createUniformTexture2DFunction(customShader, uniformName) {

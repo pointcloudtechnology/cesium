@@ -2172,6 +2172,7 @@ BillboardCollection.prototype.update = function (frameState) {
         vertexShaderSource: vs,
         fragmentShaderSource: fs,
         attributeLocations: attributeLocations,
+        uniformExtraInfo: this._sp?._uniformExtraInfo,
       });
 
       fs = new ShaderSource({
@@ -2195,6 +2196,7 @@ BillboardCollection.prototype.update = function (frameState) {
         vertexShaderSource: vs,
         fragmentShaderSource: fs,
         attributeLocations: attributeLocations,
+        uniformExtraInfo: this._spTranslucent?._uniformExtraInfo,
       });
     }
 
@@ -2220,6 +2222,7 @@ BillboardCollection.prototype.update = function (frameState) {
         vertexShaderSource: vs,
         fragmentShaderSource: fs,
         attributeLocations: attributeLocations,
+        uniformExtraInfo: this._sp?._uniformExtraInfo,
       });
     }
 
@@ -2245,6 +2248,7 @@ BillboardCollection.prototype.update = function (frameState) {
         vertexShaderSource: vs,
         fragmentShaderSource: fs,
         attributeLocations: attributeLocations,
+        uniformExtraInfo: this._spTranslucent?._uniformExtraInfo,
       });
     }
 
