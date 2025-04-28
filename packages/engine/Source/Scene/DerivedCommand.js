@@ -65,6 +65,7 @@ function getDepthOnlyShaderProgram(context, shaderProgram) {
       vertexShaderSource: shaderProgram.vertexShaderSource,
       fragmentShaderSource: fs,
       attributeLocations: shaderProgram._attributeLocations,
+      uniformExtraInfo: shaderProgram._uniformExtraInfo,
     },
   );
 }
@@ -153,6 +154,7 @@ function getLogDepthShaderProgram(context, shaderProgram) {
   }
 
   const attributeLocations = shaderProgram._attributeLocations;
+  const uniformExtraInfo = shaderProgram._uniformExtraInfo;
   const vs = shaderProgram.vertexShaderSource.clone();
   const fs = shaderProgram.fragmentShaderSource.clone();
 
@@ -224,6 +226,7 @@ void main()
       vertexShaderSource: vs,
       fragmentShaderSource: fs,
       attributeLocations: attributeLocations,
+      uniformExtraInfo: uniformExtraInfo,
     },
   );
 }
@@ -260,17 +263,18 @@ function getPickShaderProgram(context, shaderProgram, pickId) {
   }
 
   const attributeLocations = shaderProgram._attributeLocations;
+  const uniformExtraInfo = shaderProgram._uniformExtraInfo;
   const { sources, defines } = shaderProgram.fragmentShaderSource;
 
   const hasFragData = sources.some((source) => source.includes("out_FragData"));
   const outputColorVariable = hasFragData ? "out_FragData_0" : "out_FragColor";
-  const newMain = `void main () 
-{ 
-    czm_non_pick_main(); 
-    if (${outputColorVariable}.a == 0.0) { 
-        discard; 
-    } 
-    ${outputColorVariable} = ${pickId}; 
+  const newMain = `void main ()
+{
+    czm_non_pick_main();
+    if (${outputColorVariable}.a == 0.0) {
+        discard;
+    }
+    ${outputColorVariable} = ${pickId};
 } `;
 
   const length = sources.length;
@@ -287,6 +291,7 @@ function getPickShaderProgram(context, shaderProgram, pickId) {
     vertexShaderSource: shaderProgram.vertexShaderSource,
     fragmentShaderSource: fragmentShaderSource,
     attributeLocations: attributeLocations,
+    uniformExtraInfo: uniformExtraInfo,
   });
 }
 
@@ -623,6 +628,7 @@ function getPickMetadataShaderProgram(
       vertexShaderSource: shaderProgram.vertexShaderSource,
       fragmentShaderSource: newFragmentShaderSource,
       attributeLocations: shaderProgram._attributeLocations,
+      uniformExtraInfo: shaderProgram._uniformExtraInfo,
     },
   );
   return newShader;
@@ -669,6 +675,7 @@ function getHdrShaderProgram(context, shaderProgram) {
   }
 
   const attributeLocations = shaderProgram._attributeLocations;
+  const uniformExtraInfo = shaderProgram._uniformExtraInfo;
   const vs = shaderProgram.vertexShaderSource.clone();
   const fs = shaderProgram.fragmentShaderSource.clone();
 
@@ -681,6 +688,7 @@ function getHdrShaderProgram(context, shaderProgram) {
     vertexShaderSource: vs,
     fragmentShaderSource: fs,
     attributeLocations: attributeLocations,
+    uniformExtraInfo: uniformExtraInfo,
   });
 }
 

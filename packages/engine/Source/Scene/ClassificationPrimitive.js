@@ -520,6 +520,7 @@ function createShaderProgram(classificationPrimitive, frameState) {
     vertexShaderSource: vsSource,
     fragmentShaderSource: fsSource,
     attributeLocations: attributeLocations,
+    uniformExtraInfo: classificationPrimitive._spStencil?._uniformExtraInfo,
   });
 
   if (classificationPrimitive._primitive.allowPicking) {
@@ -541,6 +542,7 @@ function createShaderProgram(classificationPrimitive, frameState) {
       vertexShaderSource: pickVS3D,
       fragmentShaderSource: pickFS3D,
       attributeLocations: attributeLocations,
+      uniformExtraInfo: classificationPrimitive._spPick?._uniformExtraInfo,
     });
 
     // Derive a 2D pick shader if the primitive uses texture coordinate-based fragment culling,
@@ -566,6 +568,8 @@ function createShaderProgram(classificationPrimitive, frameState) {
             vertexShaderSource: pickVS2D,
             fragmentShaderSource: pickFS2D,
             attributeLocations: attributeLocations,
+            uniformExtraInfo:
+              classificationPrimitive._spPick?._uniformExtraInfo,
           },
         );
       }
@@ -592,6 +596,7 @@ function createShaderProgram(classificationPrimitive, frameState) {
     vertexShaderSource: vsSource,
     fragmentShaderSource: fsSource,
     attributeLocations: attributeLocations,
+    uniformExtraInfo: classificationPrimitive._sp?._uniformExtraInfo,
   });
 
   // Create a fragment shader that computes only required material hookups using screen space techniques
@@ -609,6 +614,7 @@ function createShaderProgram(classificationPrimitive, frameState) {
     vertexShaderSource: vsColorSource,
     fragmentShaderSource: fsColorSource,
     attributeLocations: attributeLocations,
+    uniformExtraInfo: classificationPrimitive._spColor?._uniformExtraInfo,
   });
 
   // Derive a 2D shader if the primitive uses texture coordinate-based fragment culling,
@@ -635,6 +641,7 @@ function createShaderProgram(classificationPrimitive, frameState) {
           vertexShaderSource: vsColorSource2D,
           fragmentShaderSource: fsColorSource2D,
           attributeLocations: attributeLocations,
+          uniformExtraInfo: classificationPrimitive._spColor?._uniformExtraInfo,
         },
       );
     }

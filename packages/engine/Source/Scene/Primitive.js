@@ -1749,6 +1749,7 @@ function createShaderProgram(primitive, frameState, appearance) {
     vertexShaderSource: vs,
     fragmentShaderSource: fs,
     attributeLocations: attributeLocations,
+    uniformExtraInfo: primitive._sp?._uniformExtraInfo,
   });
   validateShaderMatching(primitive._sp, attributeLocations);
 
@@ -1778,6 +1779,7 @@ function createShaderProgram(primitive, frameState, appearance) {
       vertexShaderSource: vs,
       fragmentShaderSource: fs,
       attributeLocations: attributeLocations,
+      uniformExtraInfo: primitive._spDepthFail?._uniformExtraInfo,
     });
     validateShaderMatching(primitive._spDepthFail, attributeLocations);
   }

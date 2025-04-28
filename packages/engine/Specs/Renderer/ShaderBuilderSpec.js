@@ -17,6 +17,7 @@ describe(
       shaderProgram,
       expectedDefines,
       expectedSources,
+      expectedUniformExtraInfo = undefined,
     ) {
       // the ShaderBuilder joins the generated lines with \n
       // to avoid creating #line 0 at every line. We need to do the same here
@@ -26,12 +27,19 @@ describe(
         sources: expectedSources,
       }).createCombinedVertexShader(context);
       expect(shaderProgram._vertexShaderText).toEqual(expectedText);
+
+      if (expectedUniformExtraInfo) {
+        expect(shaderProgram._uniformExtraInfo).toEqual(
+          expectedUniformExtraInfo,
+        );
+      }
     }
 
     function checkFragmentShader(
       shaderProgram,
       expectedDefines,
       expectedSources,
+      expectedUniformExtraInfo = undefined,
     ) {
       // the ShaderBuilder joins the generated lines with \n
       // to avoid creating #line 0 at every line. We need to do the same here
@@ -41,6 +49,12 @@ describe(
         sources: expectedSources,
       }).createCombinedFragmentShader(context);
       expect(shaderProgram._fragmentShaderText).toEqual(expectedText);
+
+      if (expectedUniformExtraInfo) {
+        expect(shaderProgram._uniformExtraInfo).toEqual(
+          expectedUniformExtraInfo,
+        );
+      }
     }
 
     it("creates an empty shader by default", function () {
@@ -816,6 +830,9 @@ describe(
       shaderBuilder.addAttribute("vec3", "a_uv");
       shaderBuilder.addVarying("vec2", "v_uv");
       shaderBuilder.addDefine("BLUE_TINT", 0.5, ShaderDestination.FRAGMENT);
+      shaderBuilder.addUniformExtraInfo("u_testUniform", {
+        shouldConvertToModelCoordinates: true,
+      });
       const vertexLines = [
         "void main()",
         "{",
@@ -834,6 +851,11 @@ describe(
       shaderBuilder.addFragmentLines(fragmentLines);
 
       const expectedAttributes = ["in vec3 a_position;", "in vec3 a_uv;"];
+      const expectedUniformExtraInfo = {
+        u_testUniform: {
+          shouldConvertToModelCoordinates: true,
+        },
+      };
 
       const expectedVaryings = ["vec2 v_uv;"];
       const expectedVertexVaryings = expectedVaryings.map(
@@ -848,11 +870,13 @@ describe(
         shaderProgram,
         [],
         expectedAttributes.concat(expectedVertexVaryings, vertexLines),
+        expectedUniformExtraInfo,
       );
       checkFragmentShader(
         shaderProgram,
         ["BLUE_TINT 0.5"],
         expectedFragmentVaryings.concat(fragmentLines),
+        expectedUniformExtraInfo,
       );
     });
   },

@@ -123,6 +123,7 @@ function getECShaderProgram(context, shaderProgram) {
   let shader = context.shaderCache.getDerivedShaderProgram(shaderProgram, "EC");
   if (!defined(shader)) {
     const attributeLocations = shaderProgram._attributeLocations;
+    const uniformExtraInfo = shaderProgram._uniformExtraInfo;
 
     const fs = shaderProgram.fragmentShaderSource.clone();
 
@@ -161,6 +162,7 @@ function getECShaderProgram(context, shaderProgram) {
         vertexShaderSource: shaderProgram.vertexShaderSource,
         fragmentShaderSource: fs,
         attributeLocations: attributeLocations,
+        uniformExtraInfo: uniformExtraInfo,
       },
     );
   }
