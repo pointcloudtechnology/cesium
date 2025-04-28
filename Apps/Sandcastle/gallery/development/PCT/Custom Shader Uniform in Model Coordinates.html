@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"
+    />
+    <meta name="description" content="Custom Shader Uniform in Model Coordinates" />
+    <meta name="cesium-sandcastle-labels" content="Development" />
+    <title>Cesium Demo</title>
+    <script type="text/javascript" src="../Sandcastle-header.js"></script>
+    <script
+      type="text/javascript"
+      src="../../../Build/CesiumUnminified/Cesium.js"
+      nomodule
+    ></script>
+    <script type="module" src="../load-cesium-es6.js"></script>
+  </head>
+  <body class="sandcastle-loading" data-sandcastle-bucket="bucket-requirejs.html">
+    <style>
+      @import url(../templates/bucket.css);
+      #toolbar {
+        background: rgba(42, 42, 42, 0.8);
+        padding: 4px;
+        border-radius: 4px;
+      }
+      #toolbar input {
+        vertical-align: middle;
+        padding-top: 2px;
+        padding-bottom: 2px;
+      }
+    </style>
+    <div id="cesiumContainer" class="fullSize"></div>
+    <div id="loadingOverlay"><h1>Loading...</h1></div>
+    <div id="toolbar"></div>
+    <script id="cesium_sandcastle_script">
+      window.startup = async function (Cesium) {
+        "use strict";
+        //Sandcastle_Begin
+        const viewer = new Cesium.Viewer("cesiumContainer", {
+          globe: new Cesium.Globe(Cesium.Ellipsoid.WGS84),
+        });
+
+        viewer.baseLayerPicker.viewModel.selectedImagery =
+          viewer.baseLayerPicker.viewModel.imageryProviderViewModels[6];
+
+        let tileset = null;
+        try {
+          tileset = await Cesium.Cesium3DTileset.fromIonAssetId(16421, {
+            customShader: new Cesium.CustomShader({
+              lightingModel: Cesium.LightingModel.UNLIT,
+              uniforms: {
+                u_pickedPos: {
+                  type: Cesium.UniformType.VEC3,
+                  value: new Cesium.Cartesian3(0.0, 0.0, 0.0),
+                  shouldConvertToModelCoordinates: true,
+                },
+              },
+              vertexShaderText: `
+                void vertexMain(VertexInput vsInput, inout czm_modelVertexOutput vsOutput) {
+                  vsOutput.pointSize = 2.0;
+                }
+                `,
+              fragmentShaderText: `
+                  // Color tiles by distance to the camera
+                  void fragmentMain(FragmentInput fsInput, inout czm_modelMaterial material)
+                  {
+                    material.diffuse = mix(
+                      material.diffuse,
+                      vec3(1.0, 0.0, 0.0),
+                      float(distance(fsInput.attributes.positionMC, u_pickedPos) <= 2.0)
+                    );
+                  }
+                  `,
+            }),
+          });
+          viewer.scene.primitives.add(tileset);
+          viewer.scene.camera.flyToBoundingSphere(tileset.boundingSphere, {
+            duration: 0,
+          });
+        } catch (error) {
+          console.log(`Error loading tileset: ${error}`);
+        }
+
+        const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+        handler.setInputAction(function (movement) {
+          const pickedPosition = viewer.scene.pickPosition(movement.endPosition);
+          if (pickedPosition && !!tileset) {
+            tileset.customShader.setUniform("u_pickedPos", pickedPosition);
+          }
+        }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+
+        //Sandcastle_End
+      };
+      if (typeof Cesium !== "undefined") {
+        window.startupCalled = true;
+        window.startup(Cesium).catch((error) => {
+          "use strict";
+          console.error(error);
+        });
+        Sandcastle.finishedLoading();
+      }
+    </script>
+  </body>
+</html>

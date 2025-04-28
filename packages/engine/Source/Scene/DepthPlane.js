@@ -184,6 +184,7 @@ DepthPlane.prototype.update = function (frameState) {
       attributeLocations: {
         position: 0,
       },
+      uniformExtraInfo: this._sp?._uniformExtraInfo,
     });
 
     this._command.shaderProgram = this._sp;

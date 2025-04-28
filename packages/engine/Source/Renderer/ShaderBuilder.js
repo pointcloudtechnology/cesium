@@ -83,6 +83,10 @@ function ShaderBuilder() {
     structIds: [],
     functionIds: [],
   };
+
+  // This maps uniform names to an object with extra info for that uniform.
+  // A uniform might have no extra info object if it does not need any extra info.
+  this._uniformExtraInfo = {};
 }
 
 Object.defineProperties(ShaderBuilder.prototype, {
@@ -290,6 +294,15 @@ ShaderBuilder.prototype.addUniform = function (type, identifier, destination) {
   if (ShaderDestination.includesFragmentShader(destination)) {
     this._fragmentShaderParts.uniformLines.push(line);
   }
+};
+
+ShaderBuilder.prototype.addUniformExtraInfo = function (identifier, extraInfo) {
+  //>>includeStart('debug', pragmas.debug);
+  Check.typeOf.string("identifier", identifier);
+  Check.typeOf.object("extraInfo", extraInfo);
+  //>>includeEnd('debug');
+
+  this._uniformExtraInfo[identifier] = extraInfo;
 };
 
 /**
@@ -513,6 +526,7 @@ ShaderBuilder.prototype.buildShaderProgram = function (context) {
     vertexShaderSource: vertexShaderSource,
     fragmentShaderSource: fragmentShaderSource,
     attributeLocations: this._attributeLocations,
+    uniformExtraInfo: this._uniformExtraInfo,
   });
 };
 

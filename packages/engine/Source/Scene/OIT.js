@@ -516,6 +516,7 @@ function getTranslucentShaderProgram(context, shaderProgram, keyword, source) {
   }
 
   const attributeLocations = shaderProgram._attributeLocations;
+  const uniformExtraInfo = shaderProgram._uniformExtraInfo;
   const fs = shaderProgram.fragmentShaderSource.clone();
 
   fs.sources = fs.sources.map(function (fsSource) {
@@ -561,6 +562,7 @@ function getTranslucentShaderProgram(context, shaderProgram, keyword, source) {
     vertexShaderSource: shaderProgram.vertexShaderSource,
     fragmentShaderSource: fs,
     attributeLocations: attributeLocations,
+    uniformExtraInfo: uniformExtraInfo,
   });
 }
 

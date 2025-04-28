@@ -145,6 +145,16 @@ CustomShaderPipelineStage.process = function (
     }
   }
 
+  const uniformExtraInfo = customShader.uniformExtraInfoMap;
+  for (const uniformName in uniformExtraInfo) {
+    if (uniformExtraInfo.hasOwnProperty(uniformName)) {
+      shaderBuilder.addUniformExtraInfo(
+        uniformName,
+        uniformExtraInfo[uniformName],
+      );
+    }
+  }
+
   const varyings = customShader.varyings;
   for (const varyingName in varyings) {
     if (varyings.hasOwnProperty(varyingName)) {
