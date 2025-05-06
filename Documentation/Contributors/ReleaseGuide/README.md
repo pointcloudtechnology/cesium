@@ -4,6 +4,19 @@ We release Cesium on the first work day of every month. The [Release Schedule](.
 
 There is no release manager; instead, our community shares the responsibility. Any committer can create the release for a given month, and at any point, they can pass the responsibility to someone else, or someone else can ask for it. This spreads knowledge, avoids stratification, avoids a single point of failure, and is beautifully unstructured ([more info](https://community.cesium.com/t/cesium-releases/45)).
 
+## Releasing PCT fork of Cesium
+
+1. Rebase to the latest tag of the original repo and push to `main` (ideally one day after the monthly release of Cesium).
+   1. Resolve any merge conflicts. This applies specifically to the `package.json`, which potentially has conflicts due to the changes we made for our package.
+   2. Push to `main`. This requires force-pushing as our commits should always be the latest commits in the history.
+2. Run `npm install` to install all dependencies and dev-dependencies required for building.
+3. Run `npm run build-release` to build all artifacts required for the package to release.
+4. Publish the top-level `cesium` package to npm by running `npm publish` in the repository root.
+
+---
+
+_Original instructions:_
+
 ## One week before release
 
 1. Check for any outdated dependencies with `npm outdated`.
