@@ -15,4 +15,5 @@
 ## PRs of PCT that were added in this fork
 
 - Allow VEC3 uniforms to be transformed into model coordinates (#1)
+- Prepare release of package to npm (#2)
 - Add methods to update texture regions without new uniforms (#3)

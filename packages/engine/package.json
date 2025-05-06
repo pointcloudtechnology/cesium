@@ -1,5 +1,5 @@
 {
-  "name": "@cesium/engine",
+  "name": "@pointcloudtechnology/cesium-engine",
   "version": "26.3.0",
   "description": "CesiumJS is a JavaScript library for creating 3D globes and 2D maps in a web browser without a plugin.",
   "keywords": [
@@ -66,14 +66,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CesiumGS/cesium.git"
+    "url": "git+https://github.com/pointcloudtechnology/cesium.git"
   },
-  "homepage": "https://cesium.com/cesiumjs/",
+  "homepage": "https://github.com/pointcloudtechnology/cesium#readme",
   "license": "Apache-2.0",
-  "author": {
-    "name": "Cesium GS, Inc.",
-    "url": "https://cesium.com"
-  },
+  "author": "Point Cloud Technology GmbH",
   "bugs": {
     "url": "https://github.com/CesiumGS/cesium/issues"
   }

@@ -16,6 +16,32 @@ There is no one release manager; instead, [our community shares the responsibili
 
 The remainder of this guide exists to make that shared release ownership clear, repeatable, and low-stress.
 
+## Releasing PCT fork of Cesium
+
+1. Rebase to the latest tag of the original repo and push to `main` (ideally one day after the monthly release of Cesium).
+   1. Resolve any merge conflicts. This applies specifically to the `package.json`, which potentially has conflicts due to the changes we made for our packages.
+   2. Push to `main`. This requires force-pushing as our commits should always be the latest commits in the history.
+2. Run `npm install` to install all dependencies and dev-dependencies required for building.
+3. Run `npm run make-zip` to build all artifacts required for the package to release.
+4. Publish the engine package to npm by running `npm publish -w @pointcloudtechnology/cesium-engine` in the repository root.
+5. Do the same for the widgets package, by running `npm publish -w @pointcloudtechnology/cesium-widgets` in the repository root.
+6. Publish the top-level `cesium` package to npm by running `npm publish` in the repository root.
+
+> [!TIP]
+> Use the `--dry-run` flag for the `npm publish` command and compare the number of packaged files and the unpacked size with the metrics of the original packages. If they are not the same, you may have made a mistake in the build process! (Note that the number of total files for the main `@pointcloudtechnology/cesium` package should always be 1 more than the original `cesium` package as it additionally includes the `CONTRIBUTING_PCT.md` file.)
+
+### Releasing outside the monthly schedule
+
+Sometimes it may be necessary to publish a release outside the usual monthly schedule, e.g., to test out a new feature while not having to wait for the next official release. For this, the package version can be suffixed with `-pct.X` with `X` being the version number (`X` $\in\mathbb{N}^+$).
+
+However, as those releases are mainly used for internal releases / experiments, we don't want those to be the latest version that is presented on [npm](https://www.npmjs.com/package/@pointcloudtechnology/cesium) and automatically installed when running `npm i @pointcloudtechnology/cesium`. Therefore, the `latest` tag should be set the latest official version after such out-of-schedule release. This can be done with `npm dist-tag add @pointcloudtechnology/cesium@1.132.0 latest` (replace `1.132.0` with the latest official version at that point).
+
+---
+
+_Original instructions:_
+
+## One week before release
+
 ## Release prep (the week before)
 
 1. Ensure you've generated valid [end-to-end testing snapshots](../TestingGuide/README.md) against a previous release tag with `npm run test-e2e-update`

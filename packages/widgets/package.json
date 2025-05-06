@@ -1,5 +1,5 @@
 {
-  "name": "@cesium/widgets",
+  "name": "@pointcloudtechnology/cesium-widgets",
   "version": "16.2.0",
   "description": "A widgets library for use with CesiumJS. CesiumJS is a JavaScript library for creating 3D globes and 2D maps in a web browser without a plugin.",
   "keywords": [
@@ -28,7 +28,7 @@
     "node": ">=22.0.0"
   },
   "dependencies": {
-    "@cesium/engine": "^26.3.0",
+    "@cesium/engine": "npm:@pointcloudtechnology/cesium-engine@26.3.0",
     "nosleep.js": "^0.12.0"
   },
   "type": "module",
@@ -41,14 +41,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CesiumGS/cesium.git"
+    "url": "git+https://github.com/pointcloudtechnology/cesium.git"
   },
-  "homepage": "https://cesium.com/cesiumjs/",
+  "homepage": "https://github.com/pointcloudtechnology/cesium#readme",
   "license": "Apache-2.0",
-  "author": {
-    "name": "Cesium GS, Inc.",
-    "url": "https://cesium.com"
-  },
+  "author": "Point Cloud Technology GmbH",
   "bugs": {
     "url": "https://github.com/CesiumGS/cesium/issues"
   }
