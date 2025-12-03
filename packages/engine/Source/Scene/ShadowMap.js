@@ -1758,6 +1758,7 @@ function createCastDerivedCommand(
           vertexShaderSource: castVS,
           fragmentShaderSource: castFS,
           attributeLocations: shaderProgram._attributeLocations,
+          uniformExtraInfo: shaderProgram._uniformExtraInfo,
         },
       );
     }
@@ -1871,6 +1872,7 @@ ShadowMap.createReceiveDerivedCommand = function (
             vertexShaderSource: receiveVS,
             fragmentShaderSource: receiveFS,
             attributeLocations: shaderProgram._attributeLocations,
+            uniformExtraInfo: shaderProgram._uniformExtraInfo,
           },
         );
       }

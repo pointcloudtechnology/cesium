@@ -373,6 +373,7 @@ EllipsoidPrimitive.prototype.update = function (frameState) {
       vertexShaderSource: vs,
       fragmentShaderSource: fs,
       attributeLocations: attributeLocations,
+      uniformExtraInfo: this._sp?._uniformExtraInfo,
     });
 
     colorCommand.vertexArray = this._va;
@@ -437,6 +438,7 @@ EllipsoidPrimitive.prototype.update = function (frameState) {
         vertexShaderSource: vs,
         fragmentShaderSource: fs,
         attributeLocations: attributeLocations,
+        uniformExtraInfo: this._pickSP?._uniformExtraInfo,
       });
 
       pickCommand.vertexArray = this._va;

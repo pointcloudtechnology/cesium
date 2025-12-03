@@ -1075,6 +1075,7 @@ PointPrimitiveCollection.prototype.update = function (frameState) {
         vertexShaderSource: vs,
         fragmentShaderSource: fs,
         attributeLocations: attributeLocations,
+        uniformExtraInfo: this._sp?._uniformExtraInfo,
       });
 
       fs = new ShaderSource({
@@ -1087,6 +1088,7 @@ PointPrimitiveCollection.prototype.update = function (frameState) {
         vertexShaderSource: vs,
         fragmentShaderSource: fs,
         attributeLocations: attributeLocations,
+        uniformExtraInfo: this._spTranslucent?._uniformExtraInfo,
       });
     }
 
@@ -1100,6 +1102,7 @@ PointPrimitiveCollection.prototype.update = function (frameState) {
         vertexShaderSource: vs,
         fragmentShaderSource: fs,
         attributeLocations: attributeLocations,
+        uniformExtraInfo: this._sp?._uniformExtraInfo,
       });
     }
 
@@ -1113,6 +1116,7 @@ PointPrimitiveCollection.prototype.update = function (frameState) {
         vertexShaderSource: vs,
         fragmentShaderSource: fs,
         attributeLocations: attributeLocations,
+        uniformExtraInfo: this._spTranslucent?._uniformExtraInfo,
       });
     }
 

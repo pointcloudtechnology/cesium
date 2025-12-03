@@ -393,6 +393,7 @@ function createShaderProgram(groundPolylinePrimitive, frameState, appearance) {
     vertexShaderSource: vsColor3D,
     fragmentShaderSource: fsColor3D,
     attributeLocations: attributeLocations,
+    uniformExtraInfo: primitive._sp?._uniformExtraInfo,
   });
 
   // Derive 2D/CV
@@ -414,6 +415,7 @@ function createShaderProgram(groundPolylinePrimitive, frameState, appearance) {
         vertexShaderSource: vsColor2D,
         fragmentShaderSource: fsColor3D,
         attributeLocations: attributeLocations,
+        uniformExtraInfo: groundPolylinePrimitive._sp?._uniformExtraInfo,
       },
     );
   }
@@ -450,6 +452,7 @@ function createShaderProgram(groundPolylinePrimitive, frameState, appearance) {
         vertexShaderSource: vsColorMorph,
         fragmentShaderSource: fsColorMorph,
         attributeLocations: attributeLocations,
+        uniformExtraInfo: groundPolylinePrimitive._spMorph?._uniformExtraInfo,
       },
     );
   }

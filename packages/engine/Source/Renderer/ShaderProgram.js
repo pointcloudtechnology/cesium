@@ -35,7 +35,7 @@ function ShaderProgram(options) {
   this._logShaderCompilation = options.logShaderCompilation;
   this._debugShaders = options.debugShaders;
   this._attributeLocations = options.attributeLocations;
-
+  this._uniformExtraInfo = options.uniformExtraInfo;
   this._program = undefined;
   this._numberOfVertexAttributes = undefined;
   this._vertexAttributes = undefined;
@@ -580,10 +580,19 @@ ShaderProgram.prototype._setUniforms = function (
   // (which makes the GL calls) is faster than removing this loop and making
   // the GL calls above.  I suspect this is because each GL call pollutes the
   // L2 cache making our JavaScript and the browser/driver ping-pong cache lines.
+  const uniformExtraInfos = this._uniformExtraInfo;
   const uniforms = this._uniforms;
   len = uniforms.length;
   for (i = 0; i < len; ++i) {
-    uniforms[i].set();
+    const name = uniforms[i].name;
+    if (
+      defined(uniformExtraInfos) &&
+      uniformExtraInfos[name]?.shouldConvertToModelCoordinates
+    ) {
+      uniforms[i].set(uniformState.inverseModel);
+    } else {
+      uniforms[i].set();
+    }
   }
 
   if (validate) {

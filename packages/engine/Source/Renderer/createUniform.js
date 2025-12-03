@@ -150,12 +150,21 @@ class UniformFloatVec3 {
 
     this._gl = gl;
     this._location = location;
+
+    this.scratchCartesian3 = new Cartesian3();
   }
 
-  set() {
+  /** @param {Matrix4 | undefined} transform */
+  set(transform) {
     const v = this.value;
 
     if (defined(v.red)) {
+      if (defined(transform)) {
+        throw new DeveloperError(
+          `Transform can only be applied to Cartesian3 uniforms. Uniform "${this.name}" is a Color.`,
+        );
+      }
+
       if (!Color.equals(v, this._value)) {
         this._value = Color.clone(v, this._value);
         this._gl.uniform3f(this._location, v.red, v.green, v.blue);
@@ -163,7 +172,20 @@ class UniformFloatVec3 {
     } else if (defined(v.x)) {
       if (!Cartesian3.equals(v, this._value)) {
         this._value = Cartesian3.clone(v, this._value);
-        this._gl.uniform3f(this._location, v.x, v.y, v.z);
+
+        if (!defined(transform)) {
+          this._gl.uniform3f(this._location, v.x, v.y, v.z);
+        }
+      }
+
+      if (defined(transform)) {
+        Matrix4.multiplyByPoint(transform, v, this.scratchCartesian3);
+        this._gl.uniform3f(
+          this._location,
+          this.scratchCartesian3.x,
+          this.scratchCartesian3.y,
+          this.scratchCartesian3.z,
+        );
       }
     } else {
       //>>includeStart('debug', pragmas.debug);

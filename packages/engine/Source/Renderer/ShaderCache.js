@@ -34,6 +34,7 @@ Object.defineProperties(ShaderCache.prototype, {
      * @param {string|ShaderSource} options.vertexShaderSource The GLSL source for the vertex shader.
      * @param {string|ShaderSource} options.fragmentShaderSource The GLSL source for the fragment shader.
      * @param {object} options.attributeLocations Indices for the attribute inputs to the vertex shader.
+     * @param {object} options.uniformExtraInfo Extra info about uniforms (e.g. `shouldConvertToModelCoordinates`).
 
      * @returns {ShaderProgram} The cached or newly created shader program.
      *
@@ -44,6 +45,7 @@ Object.defineProperties(ShaderCache.prototype, {
      *     vertexShaderSource : vs,
      *     fragmentShaderSource : fs,
      *     attributeLocations : attributeLocations
+     *     uniformExtraInfo: uniformExtraInfo,
      * });
      *
      * @see ShaderCache#getShaderProgram
@@ -79,6 +81,7 @@ ShaderCache.prototype.getShaderProgram = function (options) {
   let vertexShaderSource = options.vertexShaderSource;
   let fragmentShaderSource = options.fragmentShaderSource;
   const attributeLocations = options.attributeLocations;
+  const uniformExtraInfo = options.uniformExtraInfo;
 
   if (typeof vertexShaderSource === "string") {
     vertexShaderSource = new ShaderSource({
@@ -101,7 +104,11 @@ ShaderCache.prototype.getShaderProgram = function (options) {
   const attributeLocationKey = defined(attributeLocations)
     ? toSortedJson(attributeLocations)
     : "";
-  const keyword = `${vertexShaderKey}:${fragmentShaderKey}:${attributeLocationKey}`;
+  // The order of the extra info keys never changes, so just stringify the object.
+  const uniformExtraInfoKey = defined(uniformExtraInfo)
+    ? JSON.stringify(uniformExtraInfo)
+    : "";
+  const keyword = `${vertexShaderKey}:${fragmentShaderKey}:${attributeLocationKey}:${uniformExtraInfoKey}`;
 
   let cachedShader;
   if (defined(this._shaders[keyword])) {
@@ -126,6 +133,7 @@ ShaderCache.prototype.getShaderProgram = function (options) {
       fragmentShaderSource: fragmentShaderSource,
       fragmentShaderText: fragmentShaderText,
       attributeLocations: attributeLocations,
+      uniformExtraInfo: uniformExtraInfo,
     });
 
     cachedShader = {
@@ -190,6 +198,7 @@ ShaderCache.prototype.createDerivedShaderProgram = function (
   let vertexShaderSource = options.vertexShaderSource;
   let fragmentShaderSource = options.fragmentShaderSource;
   const attributeLocations = options.attributeLocations;
+  const uniformExtraInfo = options.uniformExtraInfo;
 
   if (typeof vertexShaderSource === "string") {
     vertexShaderSource = new ShaderSource({
@@ -219,6 +228,7 @@ ShaderCache.prototype.createDerivedShaderProgram = function (
     fragmentShaderSource: fragmentShaderSource,
     fragmentShaderText: fragmentShaderText,
     attributeLocations: attributeLocations,
+    uniformExtraInfo: uniformExtraInfo,
   });
 
   const derivedCachedShader = {

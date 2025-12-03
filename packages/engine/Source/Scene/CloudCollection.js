@@ -887,6 +887,7 @@ function createShaderProgram(cloudCollection, frameState, vsSource, fsSource) {
     vertexShaderSource: vs,
     fragmentShaderSource: fs,
     attributeLocations: attributeLocations,
+    uniformExtraInfo: that._sp?._uniformExtraInfo,
   });
 
   that._rs = RenderState.fromCache({
