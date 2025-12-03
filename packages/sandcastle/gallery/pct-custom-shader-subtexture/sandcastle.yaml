@@ -1,0 +1,7 @@
+title: PCT - Custom Shader Subtexture
+description: Example of how to replace part of an existing texture in a TextureUniform of a custom shader.
+labels:
+  - PCT
+  - 3D Tiles
+thumbnail: thumbnail.jpg
+development: true

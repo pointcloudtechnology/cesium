@@ -471,6 +471,38 @@ CustomShader.prototype.setUniform = function (uniformName, value) {
   }
 };
 
+/**
+ * Modify a region of the texture associated with the given uniform based on the given bitmap.
+ *
+ * @param {string} uniformName The GLSL name of the uniform. This must match one of the texture uniforms declared in the constructor.
+ * @param {ImageBitmap} bitmap The bitmap containing the new texture data.
+ * @param {number} xOffset The x offset in the texture where the new data should be placed.
+ * @param {number} yOffset The y offset in the texture where the new data should be placed.
+ */
+CustomShader.prototype.setTextureRegion = function (
+  uniformName,
+  bitmap,
+  xOffset,
+  yOffset,
+) {
+  //>>includeStart('debug', pragmas.debug);
+  Check.typeOf.string("uniformName", uniformName);
+  Check.defined("bitmap", bitmap);
+
+  if (!defined(this.uniforms[uniformName])) {
+    throw new DeveloperError(
+      `Uniform ${uniformName} must be declared in the CustomShader constructor.`,
+    );
+  }
+
+  if (this.uniforms[uniformName].type !== UniformType.SAMPLER_2D) {
+    throw new DeveloperError(`Uniform ${uniformName} must be a texture.`);
+  }
+  //>>includeEnd('debug');
+
+  this._textureManager.setTextureRegion(uniformName, bitmap, xOffset, yOffset);
+};
+
 CustomShader.prototype.update = function (frameState) {
   this._defaultTexture = frameState.context.defaultTexture;
   this._textureManager.update(frameState);

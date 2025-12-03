@@ -198,6 +198,33 @@ TextureManager.prototype.update = function (frameState) {
 };
 
 /**
+ * Modify a region of the texture associated with the given ID based on the given bitmap.
+ *
+ * @param {string} textureId A unique ID to identify the texture that should be modified.
+ * @param {ImageBitmap} bitmap A bitmap that will be copied into the texture.
+ * @param {number} [xOffset] The offset in the x direction within the texture to copy into.
+ * @param {number} [yOffset] The offset in the y direction within the texture to copy into.
+ *
+ * @private
+ */
+TextureManager.prototype.setTextureRegion = function (
+  textureId,
+  bitmap,
+  xOffset,
+  yOffset,
+) {
+  const texture = this._textures[textureId];
+
+  if (defined(texture)) {
+    texture.copyFrom({
+      source: bitmap,
+      xOffset,
+      yOffset,
+    });
+  }
+};
+
+/**
  * Returns true if this object was destroyed; otherwise, false.
  * <br /><br />
  * If this object was destroyed, it should not be used; calling any function other than
